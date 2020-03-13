@@ -11,7 +11,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 import model.bean.Lutador;
+import model.bean.Player;
 import model.dao.LutadorDAO;
 
 /**
@@ -88,30 +90,27 @@ public class Combate {
         return comecar;
     }
 
-    public void mostrarClasses(String nomeP) {
+    public void mostrarClasses(Player player1, Player player2) {
         Scanner in = new Scanner(System.in);
-        boolean nome = false;
+        
+        String nomeP = JOptionPane.showInputDialog("Qual o player que deseja ver os lutadores? ("+player1.getNome()+" ou "+player2.getNome()+")");
         
         LutadorDAO ldao = new LutadorDAO();
         Lutador lutador = new Lutador();
+        List<Lutador> lutadores = new ArrayList<>();
+        
+        ldao.show(nomeP, lutadores);
         
         for (Lutador l: ldao.read()){
-            
+            System.out.println(lutador.getNome());
+            System.out.println(lutadores.get(round));
         }
         
-        
-        
-        
-        
-        
-        /*if (lutador.getDono().equals(nomeP)) {
-        
-        }*/
-        
+        ldao.read();
     }
 
     public void iniciarTurno() {
-
+        System.out.println("Oque deseja fazer?");
     }
 
     public void iniciarRound() {

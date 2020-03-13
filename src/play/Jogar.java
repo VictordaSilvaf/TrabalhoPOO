@@ -8,6 +8,7 @@ package play;
 import combate.Combate;
 import model.bean.Player;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 import model.dao.PlayerDAO;
 
 /**
@@ -25,19 +26,22 @@ public class Jogar {
         Player player1 = new Player();      //instaciando o player1
         Player player2 = new Player();      //instanciando o player2
         Combate cbt = new Combate();        //instaciando o combate
-
-        System.out.println("Bem vindos ao DarkGlory, um jogo onde você dependera da sua estrategia e da sua sorte para ganhar!");
+        
+        JOptionPane.showMessageDialog(null,"Bem vindos ao DarkGlory, um jogo onde você dependera da sua estrategia e da sua sorte para ganhar!");
+        
+        
+        
 
         //loop do jogo
         while (!"sair".equals(modo)) {
 
-            System.out.println("Vai querer jogar 'sozinho' ou contra um 'amigo'? (Digite 'sozinho', 'amigo' ou 'sair')");
-            modo = in.next();
+            System.out.println();
+            modo = JOptionPane.showInputDialog("Vai querer jogar 'sozinho' ou contra um 'amigo'? (Digite 'sozinho', 'amigo' ou 'sair')");
 
             //Modo com "amigo"
             if (modo.equals("amigo")) {
-                System.out.println("Então vai querer batalhar contra seu 'amigo'...");
-                System.out.println("Não reclame depois que a amizade acabar!");
+                JOptionPane.showMessageDialog(null,"Então vai querer batalhar contra seu 'amigo'...");
+                JOptionPane.showMessageDialog(null,"Não reclame depois que a amizade acabar!");
 
                 
                 //Gerar aleatoriamente a vez que cada jogador ira jogar {
@@ -50,14 +54,12 @@ public class Jogar {
                 // }
                 
                 //Definindo os players {
-                System.out.println("Digite o nome do player 1:");
-                player1.setNome(in.next());
                 player1.setVez(vez1);
+                player1.setNome(JOptionPane.showInputDialog("Digite o nome do player 1:"));
                 player.createPlayer(player1);
-
-                System.out.println("Digite o nome do player 2:");
+                
                 player2.setVez(vez2);
-                player2.setNome(in.next());
+                player2.setNome(JOptionPane.showInputDialog("Digite o nome do player 2:"));
                 player.createPlayer(player2);
                 //}
 
@@ -66,9 +68,9 @@ public class Jogar {
                 cbt.iniciarCombate(player1.getNome(), player2.getNome(), comecar);
 
                 if (comecar == 0) {
-
+                    
                 }
-
+                cbt.mostrarClasses(player1, player2);
             }
 
         }
