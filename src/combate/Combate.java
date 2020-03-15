@@ -30,7 +30,7 @@ public class Combate {
         boolean temnumero = false; //verificando se tem o numero
         for (int i = 0; i < vez.length; i++) { //percorrendo a tabela
 
-            int valor = random.nextInt((vez.length+1));
+            int valor = random.nextInt((vez.length + 1));
 
             for (int j = 0; j < vez.length; j++) {
 
@@ -56,20 +56,18 @@ public class Combate {
         return vez;
     }
 
-    public int iniciarCombate(String player1, String player2, int comecar) {
-        
+    public void iniciarCombate(String player1, String player2) {
+
         int numBase = 0;
         int numBase2 = 4;
         criarClasses criarClasse = new criarClasses();
-         
+
         /*//Criando as classes de cada player.
         int[] vez = new int[numeroLutadores];
         Combate.definirVez(vez, numeroLutadores); //funcao para criar o array que ordena a ordem de ataque (vez).*/
-        
         //Arraylist aleatorizando a ordem dos lutadores (vezes)
         List<Integer> vezes = new ArrayList<Integer>(8);
-        
-        
+
         vezes.add(1);
         vezes.add(2);
         vezes.add(3);
@@ -78,39 +76,44 @@ public class Combate {
         vezes.add(6);
         vezes.add(7);
         vezes.add(8);
-        
+
         Collections.shuffle(vezes); // aleatorizando o arraylist
 
         criarClasse.CriarClasse(player1, numBase, vezes);
         criarClasse.CriarClasse(player2, numBase2, vezes);
-
-        Random random = new Random();
-
-        comecar = random.nextInt(2); //Define quem vai comecar se comecar igual a 0 player1 comeca se igual a 1 player2.
-        return comecar;
     }
 
     public void mostrarClasses(Player player1, Player player2) {
         Scanner in = new Scanner(System.in);
-        
-        String nomeP = JOptionPane.showInputDialog("Qual o player que deseja ver os lutadores? ("+player1.getNome()+" ou "+player2.getNome()+")");
-        
+
+        String nomeP = JOptionPane.showInputDialog("Qual o player que deseja ver os lutadores? (" + player1.getNome() + " ou " + player2.getNome() + ")");
+
         LutadorDAO ldao = new LutadorDAO();
         Lutador lutador = new Lutador();
         List<Lutador> lutadores = new ArrayList<>();
-        
+
         ldao.show(nomeP, lutadores);
-        
-        for (Lutador l: ldao.read()){
-            System.out.println(lutador.getNome());
-            System.out.println(lutadores.get(round));
+
+        for (Lutador l : ldao.read(nomeP)) {
+            JOptionPane.showMessageDialog(null, "Nome: "+l.getNome()+"\nDano: "+l.getDano()+"\nVida: "+l.getVida()+"\nBarreira: "+l.getBarreira()+"\nVez: "+l.getVez()+"\nDono: "+l.getDono());
+            
         }
-        
-        ldao.read();
+
+        ldao.read(nomeP);
     }
 
-    public void iniciarTurno() {
-        System.out.println("Oque deseja fazer?");
+    public void iniciarTurno(Player player, Player player1, Player player2) {
+        String acao;
+
+        do {
+            acao = JOptionPane.showInputDialog("Oque deseja fazer " + player.getNome() + "? ('ver lutadores' ou 'batalhar')");
+        } while (!"ver lutadores".equals(acao) || !"batalhar".equals(acao));
+
+        if (acao.equals("ver lutadores")) {
+            mostrarClasses(player1, player2);
+        } else if (acao.equals("batalhar")) {
+            iniciarRound();
+        }
     }
 
     public void iniciarRound() {

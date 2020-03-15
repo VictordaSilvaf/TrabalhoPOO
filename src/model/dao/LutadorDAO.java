@@ -44,7 +44,7 @@ public class LutadorDAO {
 
     }
 
-    public List<Lutador> read() {
+    public List<Lutador> read(String nomeP) {
         Connection con = FabricaConexao.getConnection();
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -52,7 +52,7 @@ public class LutadorDAO {
         List<Lutador> lutadores = new ArrayList<>();
         
         try {
-            stmt = con.prepareStatement("SELECT * FROM (lutadores)");
+            stmt = con.prepareStatement("select * FROM (lutadores) where dono = '"+nomeP+"';");
             rs = stmt.executeQuery();
             
             while (rs.next()) {
