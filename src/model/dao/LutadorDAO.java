@@ -109,4 +109,37 @@ public class LutadorDAO {
         }
         return lutadores;
     }
+    
+    public List<Lutador> Rounds(String nomeP, List lutadores) {
+        Connection con = FabricaConexao.getConnection();
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        
+        try {
+            stmt = con.prepareStatement("select * FROM (lutadores) where dono = '"+nomeP+"';");
+            rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                
+                Lutador lutador = new Lutador();
+                
+                lutador.setId(rs.getInt("id"));
+                lutador.setNome(rs.getString("nome"));
+                lutador.setDano(rs.getInt("dano"));
+                lutador.setVida(rs.getInt("vida"));
+                lutador.setVez(rs.getInt("vez"));
+                lutador.setBarreira(rs.getInt("barreira"));
+                lutador.setDono(rs.getString("dono"));
+                
+                lutadores.add(lutador);
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LutadorDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            FabricaConexao.closeConnection(con, stmt, rs);
+        }
+        return lutadores;
+    }
+    
 }

@@ -22,5 +22,5 @@ CREATE TABLE lutadores (
     PRIMARY KEY (id)
 );
 
-select * from lutadores;
+select * from lutadores order by vez;
 select * from player;
