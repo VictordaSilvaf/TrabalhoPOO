@@ -23,7 +23,7 @@ import model.dao.LutadorDAO;
 public class Combate {
 
     public int turno = 1;
-    public int round = 1;
+    public int round = 0;
 
     public static int[] definirVez(int[] vez, int quantidadeVezez) {
         Random random = new Random(); //definindo o objeto random
@@ -81,22 +81,24 @@ public class Combate {
 
         criarClasse.CriarClasse(player1, numBase, vezes);
         criarClasse.CriarClasse(player2, numBase2, vezes);
+
     }
 
     public void mostrarClasses(Player player1, Player player2) {
         Scanner in = new Scanner(System.in);
 
-        String nomeP = JOptionPane.showInputDialog("Qual o player que deseja ver os lutadores? (" + player1.getNome() + " ou " + player2.getNome() + ")");
-
         LutadorDAO ldao = new LutadorDAO();
         Lutador lutador = new Lutador();
+
+        String nomeP = JOptionPane.showInputDialog("Qual o player que deseja ver os lutadores? (" + player1.getNome() + " , " + player2.getNome() + " ou Sair)");
+
         List<Lutador> lutadores = new ArrayList<>();
 
         ldao.show(nomeP, lutadores);
 
         for (Lutador l : ldao.read(nomeP)) {
-            JOptionPane.showMessageDialog(null, "Nome: "+l.getNome()+"\nDano: "+l.getDano()+"\nVida: "+l.getVida()+"\nBarreira: "+l.getBarreira()+"\nVez: "+l.getVez()+"\nDono: "+l.getDono());
-            
+            JOptionPane.showMessageDialog(null, "Nome: " + l.getNome() + "\nDano: " + l.getDano() + "\nVida: " + l.getVida() + "\nBarreira: " + l.getBarreira() + "\nVez: " + l.getVez() + "\nDono: " + l.getDono());
+
         }
 
         ldao.read(nomeP);
@@ -106,17 +108,63 @@ public class Combate {
         String acao;
 
         do {
-            acao = JOptionPane.showInputDialog("Oque deseja fazer " + player.getNome() + "? ('ver lutadores' ou 'batalhar')");
-        } while (!"ver lutadores".equals(acao) || !"batalhar".equals(acao));
+            acao = JOptionPane.showInputDialog("Oque deseja fazer " + player.getNome() + "? ('Ver campo' , 'Batalhar' ou 'Sair')");
 
-        if (acao.equals("ver lutadores")) {
-            mostrarClasses(player1, player2);
-        } else if (acao.equals("batalhar")) {
-            iniciarRound();
-        }
+            System.out.println(acao);
+
+            if (acao.equals("Ver campo")) {
+                mostrarClasses(player1, player2);
+            } else if (acao.equals("Batalhar")) {
+                iniciarRound();
+            }
+        } while (!acao.equals("Sair"));
+
     }
 
     public void iniciarRound() {
+        
+        LutadorDAO ldao = new LutadorDAO();
+        List<Lutador> lutadores = new ArrayList<>();
+
+        String acao = null;
+        do {
+            JOptionPane.showMessageDialog(null, "Turno: " + this.turno + "\nRound: " + (this.round+1));
+
+            for (; this.round < 8; this.round++) {
+                acao = JOptionPane.showInputDialog("Oque deseja fazer? (Atacar, Defender, Passar ou Sair)");
+
+                switch (acao) {
+                    case "Atacar":
+                        int vezRound = this.round+1;
+                        for (Lutador l : ldao.vezRound(vezRound, lutadores)) {
+                            String recebeAtaque = JOptionPane.showInputDialog("Quem gostaria de atacar?\n(Orc da Montanha, Orc da Areia, Arqueiro, Dragao)\nNome: " + l.getNome() + "\nDano: " + l.getDano() + "\nVida: " + l.getVida() + "\nBarreira: " + l.getBarreira() + "\nVez: " + l.getVez() + "\nDono: " + l.getDono());
+                            int danoAtacante = l.getDano();
+                            ldao.receberAtaque(recebeAtaque, l.getDono(), lutadores);
+                            
+                            int vida = (l.getVida() - danoAtacante);
+                            int id = l.getId();
+                            System.out.println(l.getVida());
+                            
+                            if (l.getVida() < 0) {
+                                l.setVida(0);
+                            }
+                            
+                            System.out.println(l.getVida());
+                            
+                            ldao.salvarVida(vida, id);
+                        }   break;
+                    case "Defender":
+                        break;
+                    case "Passar":
+                        break;
+                    case "Sair":
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        } while (!"Sair".equals(acao) || !"Fim".equals(acao));
 
     }
 

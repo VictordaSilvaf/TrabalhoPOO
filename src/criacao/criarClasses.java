@@ -44,8 +44,8 @@ public class criarClasses {
 
         Arqueiro.setNome("Arqueiro");
         Arqueiro.setDono(nome);
-        Arqueiro.setDano(10 + random.nextInt(11));
-        Arqueiro.setVida(12 + random.nextInt(11));
+        Arqueiro.setDano(16 + random.nextInt(11));
+        Arqueiro.setVida(15 + random.nextInt(16));
         Arqueiro.setBarreira(0);
         Arqueiro.setVez(vezes.get(numBase++));
         

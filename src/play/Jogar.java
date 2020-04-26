@@ -34,11 +34,11 @@ public class Jogar {
         while (!"sair".equals(modo)) {
 
             System.out.println();
-            modo = JOptionPane.showInputDialog("Vai querer jogar 'sozinho' ou contra um 'amigo'? (Digite 'sozinho', 'amigo' ou 'sair')");
+            modo = JOptionPane.showInputDialog("Vai querer jogar 'Sozinho' ou contra um 'Amigo'? (Digite 'Sozinho', 'Amigo' ou 'Sair')");
 
             //Modo com "amigo"
-            if (modo.equals("amigo")) {
-                JOptionPane.showMessageDialog(null, "Então vai querer batalhar contra seu 'amigo'...");
+            if (modo.equals("Amigo")) {
+                JOptionPane.showMessageDialog(null, "Então vai querer batalhar contra seu 'Amigo'...");
                 JOptionPane.showMessageDialog(null, "Não reclame depois que a amizade acabar!");
 
                 //Gerar aleatoriamente a vez que cada jogador ira jogar {
@@ -61,7 +61,14 @@ public class Jogar {
                 //}
                 
                 cbt.iniciarCombate(player1.getNome(), player2.getNome());
-
+                
+                if (player1.getVez() > player2.getVez()) {
+                    cbt.iniciarTurno(player1,player1,player2);
+                }else if (player2.getVez() > player1.getVez()) {
+                    cbt.iniciarTurno(player2,player1,player2);
+                }else{
+                    System.out.println("Erro Vez.");
+                }
             }
 
         }
